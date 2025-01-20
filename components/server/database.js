@@ -1,6 +1,6 @@
 // imports
 const sqlite3 = require('sqlite3').verbose();
-const pretty = require('./pretty.js');
+const pretty = require('../utils/pretty.js');
 
 // create database
 const db = new sqlite3.Database(config_database[file]);
