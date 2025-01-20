@@ -1,0 +1,8 @@
+{
+    "file": "funkey.db",
+    "host": "localhost",
+    "name": "ubfunkeys",
+    "user": "root",
+    "password": "",
+    "port": 3306
+}

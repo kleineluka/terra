@@ -1,0 +1,20 @@
+{
+    "familiar": {
+        "cost": 100,
+        "discount_cost": 50,
+        "duration": 720
+    },
+    "mood": {
+        "cost": 100
+    },
+    "cleaning": {
+        "cost": 100
+    },
+    "item": {
+        "cost": 100
+    },
+    "jammer": {
+        "quantities": [1, 5, 10, 25, 50, 100],
+        "cost": 10
+    }
+}
