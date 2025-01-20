@@ -1,4 +1,5 @@
 // initialize requirements with no dependencies
+const net = require('net');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -22,7 +23,37 @@ pretty.print("All server components have been loaded!");
 app.set('trust proxy', true)
 app.use(cookieParser());
 
-// create the server
+// create the http server
 app.listen(config_server['port'], config_server['host'], () => {
     pretty.print(`Server is running on http://${config_server['host']}:${config_server['port']}`);
+});
+
+// create the tcp server
+const tcpServer = net.createServer((socket) => {
+    pretty.print(`TCP connection established from ${socket.remoteAddress}:${socket.remotePort}`);
+
+    socket.on('data', (data) => {
+        pretty.print(`Received TCP data: ${data}`);
+        socket.write('Echo: ' + data); 
+    });
+
+    socket.on('close', () => {
+        pretty.print('TCP connection closed');
+    });
+
+    socket.on('error', (err) => {
+        pretty.print(`TCP error: ${err.message}`);
+    });
+});
+
+// Start TCP server
+tcpServer.listen(config_server['tcp_port'], config_server['host'], () => {
+    pretty.print(`TCP server is running on ${config_server['host']}:${config_server['tcp_port']}`);
+});
+
+// log requests
+//function request(kind, user_agent, ip, url) {
+app.use((req, res, next) => {
+    pretty.request(req.method, req.headers['user-agent'], req.ip, req.url);
+    next();
 });
