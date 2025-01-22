@@ -10,8 +10,8 @@ class TCPServer {
     }
 
     // add middleware to the chain
-    use(fn) {
-        this.middleware.push(fn);
+    use(fn, commandFilter = null) {
+        this.middleware.push({ fn, commandFilter });
     }
 
     // run middleware chain
@@ -19,9 +19,15 @@ class TCPServer {
         let index = 0;
         const next = (err) => {
             if (err) return done(err);
-            const middlewareFn = this.middleware[index++];
-            if (middlewareFn) {
-                middlewareFn(socket, commandInfo, next);
+            const middlewareObj = this.middleware[index++];
+            if (middlewareObj) {
+                // check command filter (if present) before running the middleware
+                const { fn, commandFilter } = middlewareObj;
+                if (!commandFilter || commandFilter === commandInfo.parts[0]) {
+                    fn(socket, commandInfo, next);
+                } else {
+                    next(); // skip to the next middleware
+                }
             } else {
                 done(); // end of chain
             }
@@ -76,6 +82,9 @@ class TCPServer {
         if (routingString) {
             commandInfo.push(...routingString.split('|'));
         }
+
+        // debug print out
+        pretty.print(`New TCP Command: ${commandInfo.join(' | ')}`, 'DEBUG');
 
         return commandInfo;
     }

@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const pretty = require('../utils/pretty.js');
 
 // create database connection
-const db = new sqlite3.Database(config_database[file], (err) => {
+const db = new sqlite3.Database(global.config_database['file_path'], (err) => {
     if (err) {
         pretty.error(`Failed to connect to SQLite: ${err.message}`);
     } else {
@@ -23,17 +23,38 @@ function initialize() {
             security_question TEXT,
             security_answer TEXT,
             phone_status INTEGER DEFAULT 0,
-            chat_status INTEGER DEFAULT 0
+            chat_status INTEGER DEFAULT 0,
+            connection_id VARCHAR(50) DEFAULT NULL,
+            is_online INT DEFAULT NULL,
+            buddy_list VARCHAR(100) DEFAULT NULL,
+            transaction_count INT DEFAULT NULL,
+            transaction_history MEDIUMTEXT DEFAULT NULL,
+            jammers_total INT DEFAULT NULL,
+            jammers_used INT DEFAULT NULL,
         );
     `;
 
+    // create the users table
     db.run(createUsersTable, (err) => {
         if (err) {
             pretty.error(`Error creating users table: ${err.message}`);
         } else {
-            pretty.print('Users table initialized');
+            pretty.print('Users table initialized!', 'DATABASE');
+            // reset all users' online status to offline if the table already exists
+            const resetStatuses = `
+                UPDATE users 
+                SET phone_status = 0, chat_status = 0, connection_id = NULL, is_online = 0
+            `;
+            db.run(resetStatuses, (err) => {
+                if (err) {
+                    pretty.error(`Error resetting user statuses: ${err.message}`);
+                } else {
+                    pretty.print('User statuses reset to offline (presumably due to server start-up).', 'DATABASE');
+                }
+            });
         }
     });
+
 }
 
 // function to run SQL queries with parameters

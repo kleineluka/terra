@@ -1,5 +1,5 @@
 {
-    "file": "funkey.db",
+    "file_path": "funkey.db",
     "host": "localhost",
     "name": "ubfunkeys",
     "user": "root",
