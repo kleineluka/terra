@@ -30,10 +30,10 @@ async function registerUser(commandInfo) {
     try {
         await db.runQuery(insertQuery, params);
         pretty.print(`User ${username} registered.`, 'DATABASE');
-        return this.createResponseXml('u_reg', { r: 0 }); // we did it!
+        return ResponseBuilder.createResponseXml('u_reg', { r: 0 }); // we did it!
     } catch (error) {
         pretty.error('Error inserting user:', error.message);
-        return this.createResponseXml('u_reg', { r: 6 }); // who knows.. generic error :p
+        return ResponseBuilder.createResponseXml('u_reg', { r: 6 }); // who knows.. generic error :p
     }
 
 }

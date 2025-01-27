@@ -15,25 +15,42 @@ class TCPServer {
     }
 
     // run middleware chain
-    runMiddleware(socket, commandInfo, done) {
+    async runMiddleware(socket, commandInfo, done) {
         let index = 0;
+
+        // Ensure commandInfo is resolved before proceeding
+        const resolvedCommandInfo = await Promise.resolve(commandInfo).catch((err) => {
+            console.error('Error resolving commandInfo:', err);
+            return null;
+        });
+
+        if (!resolvedCommandInfo) {
+            return done(new Error('Invalid commandInfo: Unable to resolve'));
+        }
+
         const next = (err) => {
             if (err) return done(err);
             const middlewareObj = this.middleware[index++];
             if (middlewareObj) {
-                // check command filter (if present) before running the middleware
                 const { fn, commandFilter } = middlewareObj;
-                if (!commandFilter || commandFilter === commandInfo.parts[0]) {
-                    fn(socket, commandInfo, next);
+                console.log(`Processing Middleware: ${index}`);
+                console.log('Command Info:', resolvedCommandInfo.parts);
+                console.log('Command Filter:', commandFilter);
+                if (!commandFilter || commandFilter === resolvedCommandInfo.parts[0]) {
+                    fn(socket, resolvedCommandInfo, next);
                 } else {
-                    next(); // skip to the next middleware
+                    console.log(`Skipping Middleware: ${index}`);
+                    next(); // Skip to the next middleware
                 }
             } else {
-                done(); // end of chain
+                console.log('End of Middleware Chain');
+                done();
             }
         };
-        next(); // start the chain
+
+        next();
     }
+
 
     // parse received message into individual commands (separated by null byte)
     parseReceivedMessage(message) {
@@ -110,31 +127,34 @@ class TCPServer {
             pretty.print(`TCP connection established from ${socket.remoteAddress}:${socket.remotePort}`);
 
             // on incoming data
-            socket.on('data', (data) => {
-
+            socket.on('data', async (data) => {
                 // step one: parse incoming data into commands
                 const commands = this.parseReceivedMessage(data);
 
-                commands.forEach((command) => {
+                for (const command of commands) {
+                    try {
+                        // step two: parse command info and routing (await async functions)
+                        const parts = await this.parseCommand(command); // Await the resolution
+                        const routing = this.parseRoutingStrings(command); // Assume this is synchronous
 
-                    // step two: parse command info and routing
-                    const commandInfo = {
-                        fullCommand: command,
-                        parts: this.parseCommand(command),
-                        routing: this.parseRoutingStrings(command)
-                    };
+                        const commandInfo = {
+                            fullCommand: command,
+                            parts,
+                            routing
+                        };
 
-                    // step three: run middleware chain
-                    this.runMiddleware(socket, commandInfo, (err) => {
-                        if (err) {
-                            pretty.error(`Error in middleware: ${err.message}`);
-                            socket.write('Error: ' + err.message);
-                            return;
-                        }
-                        // no middleware handled the response
-                        socket.write(`Command processed: ${commandInfo.fullCommand}`);
-                    });
-                });
+                        // step three: run middleware chain
+                        this.runMiddleware(socket, commandInfo, (err) => {
+                            if (err) {
+                                pretty.error(`Error in middleware: ${err.message}`);
+                                return;
+                            }
+                        });
+                    } catch (err) {
+                        // Handle errors from async parsing
+                        pretty.error(`Error processing command: ${err.message}`);
+                    }
+                }
             });
 
             // on socket disconnection

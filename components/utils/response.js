@@ -16,7 +16,7 @@ class ResponseBuilder {
     // formats it to what ub funkeys expects
     formatStreamResponse(response) {
         // converts the string to a byte array and then adds a null terminator
-        const responseBytes = Buffer.from(response, 'utf-8'); 
+        const responseBytes = Buffer.from(response, 'ascii'); 
         const terminator = Buffer.from([0x00]); 
         return Buffer.concat([responseBytes, terminator]);
     }

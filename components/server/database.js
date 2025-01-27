@@ -30,7 +30,7 @@ function initialize() {
             transaction_count INT DEFAULT NULL,
             transaction_history MEDIUMTEXT DEFAULT NULL,
             jammers_total INT DEFAULT NULL,
-            jammers_used INT DEFAULT NULL,
+            jammers_used INT DEFAULT NULL
         );
     `;
 
