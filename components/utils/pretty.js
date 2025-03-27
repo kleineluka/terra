@@ -1,7 +1,7 @@
 // imports used here
 const chalk = require('chalk');
 
-// make text colored
+// make text coloured
 const header_styling = {
     'LOGS': chalk.magentaBright,
     'DEBUG ALWAYS': chalk.green,

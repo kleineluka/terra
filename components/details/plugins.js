@@ -2,8 +2,8 @@
 const ResponseBuilder = require('./../utils/response.js');
 const pretty = require('./../utils/pretty.js');
 
-// get the host details
-async function getHostDetails(commandInfo) {
+// get the plugin details
+async function getPluginsDetails(commandInfo) {
     
     // get what kind of server it's requesting
     const [_, serverType] = commandInfo;
@@ -29,21 +29,22 @@ async function getHostDetails(commandInfo) {
     }
 
     // Build the XML response
-    return ResponseBuilder.createResponseXml('a_gsd', {
+    return ResponseBuilder.createResponseXml('a_gpd', {
         s: serverID,
         xi: xIPAddress,
         xp: xPort,
         bi: bIPAddress,
-        bp: bPort
+        bp: bPort,
+        p: serverType
     });
 }
 
-// middleware for getting the host details
-async function hostDetailsMiddleware(socket, commandInfo, next) {
-    pretty.print('Attempting to send host details to the client.');
+// middleware for getting the plugin details
+async function pluginsDetailsMiddleware(socket, commandInfo, next) {
+    pretty.print('Attempting to send plugin details to the client.');
     try {
         // await the guest login response and send to client
-        const responseXml = await getHostDetails(commandInfo.parts);
+        const responseXml = await getPluginsDetails(commandInfo.parts);
         console.log('Response XML:', responseXml);
         socket.write(responseXml);
         next();
@@ -57,6 +58,6 @@ async function hostDetailsMiddleware(socket, commandInfo, next) {
 
 // exports
 module.exports = {
-    getHostDetails,
-    hostDetailsMiddleware
+    getPluginsDetails,
+    pluginsDetailsMiddleware
 };

@@ -133,9 +133,9 @@ class TCPServer {
 
                 for (const command of commands) {
                     try {
-                        // step two: parse command info and routing (await async functions)
-                        const parts = await this.parseCommand(command); // Await the resolution
-                        const routing = this.parseRoutingStrings(command); // Assume this is synchronous
+                        // step two: parse command info and routing 
+                        const parts = await this.parseCommand(command); 
+                        const routing = this.parseRoutingStrings(command); 
 
                         const commandInfo = {
                             fullCommand: command,
@@ -151,7 +151,6 @@ class TCPServer {
                             }
                         });
                     } catch (err) {
-                        // Handle errors from async parsing
                         pretty.error(`Error processing command: ${err.message}`);
                     }
                 }
