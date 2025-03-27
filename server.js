@@ -6,11 +6,9 @@ const cookieParser = require('cookie-parser');
 // import utils
 const pretty = require('./components/utils/pretty.js');
 
-// load configuration files
-global.config_costs = require("./configs/costs.json");
-global.config_database = require("./configs/database.json");
-global.config_items = require("./configs/items.json");
-global.config_server = require("./configs/server.json");
+// set up the environment
+const environment = require('./components/utils/environment.js');
+environment.setupEnvironment();
 
 // import servers + initialize database
 const { HTMLServer } = require('./components/server/http.js');

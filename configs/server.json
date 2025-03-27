@@ -3,5 +3,6 @@
     "host": "localhost",
     "port": 3109,
     "tcp_port": 3110,
-    "version": "0.0.1"
+    "version": "0.0.1",
+    "profiles_folder": "data"
 }
