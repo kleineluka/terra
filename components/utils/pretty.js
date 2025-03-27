@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const header_styling = {
     'LOGS': chalk.magentaBright,
     'DEBUG ALWAYS': chalk.green,
+    'DEBUG': chalk.green,
     'DEBUG GATED': chalk.blueBright,
     'ERROR': chalk.redBright,
     "TIMESTAMP": chalk.yellowBright,
@@ -41,8 +42,7 @@ function pretty_rainbow(msg) {
 }
 
 // print but... pretty !
-function print(msg, gate = true, source = 'LOGS', append = '') {
-    if (gate == false) return;
+function print(msg, source = 'LOGS', append = '') {
     var header = '[';
     header += pretty_rainbow(config_server['name']) + ' @ ';
     var date = new Date();
@@ -54,6 +54,7 @@ function print(msg, gate = true, source = 'LOGS', append = '') {
     }
     formatted_date += ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
     formatted_date += ':' + (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+    formatted_date += ' ' + formatted_append;
     header += header_styling['TIMESTAMP'](formatted_date) + '] -> ';
     header += header_styling[source](source) + ': ';
     header = '\x1b[1m' + header + '\x1b[0m' + msg;
@@ -86,7 +87,7 @@ function error(msg, error = null, sol = null) {
     if (config_server['debug'] && error != null) {
         append_msg += '\n' + header_styling['DEBUG ALWAYS']("DEBUG ENABLED") + header_styling['DIRECTION'](" -> ") + header_styling['ERROR'](error);
     }
-    print(msg, true, 'ERROR', append_msg);
+    print(msg, 'ERROR', append_msg);
 }
 
 // requests
@@ -97,7 +98,9 @@ function request(kind, user_agent, ip, url) {
     ip = 'IP @ ' + request_styling['IP'](ip);
     url = request_styling['URL'](url);
     let msg = 'Recieving a ' + kind + ' request from ' + ip + ' (' + user_agent + ') for ' + url + '.';
-    print(msg, config_server['debug'], 'REQUEST');
+    if (config_server['debug']) {
+        print(msg, 'REQUEST');
+    }
 }
 
 // export the functions
