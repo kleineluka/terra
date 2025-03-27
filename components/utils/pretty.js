@@ -4,8 +4,8 @@ const chalk = require('chalk');
 // make text coloured
 const header_styling = {
     'LOGS': chalk.magentaBright,
+    'DEBUG': chalk.magenta,
     'DEBUG ALWAYS': chalk.green,
-    'DEBUG': chalk.green,
     'DEBUG GATED': chalk.blueBright,
     'ERROR': chalk.redBright,
     "TIMESTAMP": chalk.yellowBright,

@@ -19,10 +19,11 @@ const { initialize } = require('./components/server/database.js');
 initialize();
 
 // import middlewares
-const { registerUserMiddleware } = require('./components/account/create.js');
-const { loginGuestUserMiddleware } = require('./components/account/guest.js');
+const { registerUserMiddleware } = require('./components/core/create.js');
+const { loginGuestUserMiddleware } = require('./components/core/guest.js');
 const { hostDetailsMiddleware } = require('./components/details/host.js');
 const { pluginsDetailsMiddleware } = require('./components/details/plugins.js');
+const { loginRegisteredUserMiddleware } = require('./components/core/login.js');
 
 // allocate the body parsers (BEFORE routing)
 global.body_parser = require('body-parser');
@@ -37,10 +38,11 @@ app.listen(config_server['port'], config_server['host'], () => {
 
 // create the tpc server
 const tcpServer = new TCPServer();
-tcpServer.use(registerUserMiddleware, 'u_reg'); // Register User Account
-tcpServer.use(loginGuestUserMiddleware, 'a_lgu'); // Login Guest User
-tcpServer.use(hostDetailsMiddleware, 'a_gsd'); // Get Host Details
-tcpServer.use(pluginsDetailsMiddleware, 'a_gpd'); // Get Plugin Details
+tcpServer.use(registerUserMiddleware, 'u_reg'); // register user account
+tcpServer.use(loginGuestUserMiddleware, 'a_lgu'); // login guest user
+tcpServer.use(hostDetailsMiddleware, 'a_gsd'); // get host details
+tcpServer.use(pluginsDetailsMiddleware, 'a_gpd'); // get plugin details
+tcpServer.use(loginRegisteredUserMiddleware, 'a_lru'); // login registered user
 tcpServer.listen(config_server['tcp_port'], config_server['host'], () => {
     pretty.print('TCP server started on ' + config_server['host'] + ':' + config_server['tcp_port']);
 });

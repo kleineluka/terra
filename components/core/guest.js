@@ -1,6 +1,6 @@
 // imports
-const ResponseBuilder = require('./../utils/response.js');
-const pretty = require('./../utils/pretty.js');
+const ResponseBuilder = require('../utils/response.js');
+const pretty = require('../utils/pretty.js');
 
 // login a guest user
 async function loginGuestUser(commandInfo) {
@@ -33,7 +33,6 @@ async function loginGuestUserMiddleware(socket, commandInfo, next) {
         next(err);
     }
 }
-
 
 // exports
 module.exports = {

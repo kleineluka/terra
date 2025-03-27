@@ -18,7 +18,7 @@ class TCPServer {
     async runMiddleware(socket, commandInfo, done) {
         let index = 0;
 
-        // Ensure commandInfo is resolved before proceeding
+        // ensure commandInfo is resolved before proceeding
         const resolvedCommandInfo = await Promise.resolve(commandInfo).catch((err) => {
             console.error('Error resolving commandInfo:', err);
             return null;
