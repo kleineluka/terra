@@ -21,8 +21,8 @@ initialize();
 // import middlewares
 const { registerUserMiddleware } = require('./components/core/create.js');
 const { loginGuestUserMiddleware } = require('./components/core/guest.js');
-const { hostDetailsMiddleware } = require('./components/details/host.js');
-const { pluginsDetailsMiddleware } = require('./components/details/plugins.js');
+const { hostDetailsMiddleware } = require('./components/core/host.js');
+const { pluginsDetailsMiddleware } = require('./components/core/plugins.js');
 const { loginRegisteredUserMiddleware } = require('./components/core/login.js');
 
 // allocate the body parsers (BEFORE routing)

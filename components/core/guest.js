@@ -24,6 +24,7 @@ async function loginGuestUserMiddleware(socket, commandInfo, next) {
     try {
         // await the guest login response and send to client
         const responseXml = await loginGuestUser(commandInfo.parts);
+        socket.userWristband = 'GUEST_' + `${socket.remoteAddress}:${socket.remotePort}`; // so we can keep track of the user across requests
         socket.write(responseXml);
         next();
     } catch (err) {

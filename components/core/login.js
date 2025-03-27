@@ -67,10 +67,10 @@ async function loginRegisteredUserMiddleware(socket, commandInfo, next) {
         // add user ID only on successful login (resultCode 0)
         if (resultCode === 0 && user) {
             responseAttributes.u = user.id.toString();
-            socket.userData = user; // so we can keep track of the user across requests
+            socket.userWristband = user; // so we can keep track of the user across requests
             pretty.print(`Associated user ${user.username} with socket ${connectionID}.`);
         } else {
-            socket.userData = null; // not really necessary, but just clear on fail
+            socket.userWristband = null; // not really necessary, but just clear on fail
             pretty.print(`Login failed for ${username} with code ${resultCode}.`);
         }
         // build response + send
