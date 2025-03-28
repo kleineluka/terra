@@ -15,8 +15,6 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
     - [x] HTTP Server
     - [x] Packet Formatting
     - [x] Active Connection Manager
-    - [ ] Clean Up Code (ex. debug messages)
-    - [ ] Figure Out More Response Codes
     - [ ] Web Panel for Admins
     - [ ] EULA Check
     - [ ] Send Proper Errors for Server Failures
@@ -29,7 +27,7 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
 - [ ] User Features
     - [ ] Friend List
     - [ ] Chat Status
-    - [ ] Phone Status
+    - [x] Phone Status
     - [ ] Add Friend
     - [ ] Accept Friend
     - [ ] Delete Friend
@@ -67,6 +65,8 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
     - [ ] Play Again
 - [ ] Misc
     - [ ] "p" command - heartbeat?
+    - [ ] Clean Up Code (ex. debug messages)
+    - [ ] Figure Out More Response Codes
     - [ ] Documentation
 
 # Why Node? Why not continue Java or C#? 😨
