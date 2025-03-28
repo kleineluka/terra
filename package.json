@@ -1,14 +1,13 @@
 {
   "name": "terra",
   "version": "0.0.1",
-  "description": "Terra server implementation for emulating a UB Funkeys server.",
+  "description": "Server for UB Funkeys!",
   "main": "server.js",
   "scripts": {
-    "test": "test",
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
