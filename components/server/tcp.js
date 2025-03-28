@@ -2,6 +2,7 @@
 const net = require('net');
 const pretty = require('./../utils/pretty.js');
 const { parseStringPromise } = require('xml2js');
+const { registerConnection, unregisterConnection } = require('../utils/connections.js');
 
 class TCPServer {
 
@@ -17,6 +18,7 @@ class TCPServer {
     // run middleware chain
     async runMiddleware(socket, commandInfo, done) {
         let index = 0;
+        let handled = false;
 
         // ensure commandInfo is resolved before proceeding
         const resolvedCommandInfo = await Promise.resolve(commandInfo).catch((err) => {
@@ -37,12 +39,16 @@ class TCPServer {
                 console.log('Command Info:', resolvedCommandInfo.parts);
                 console.log('Command Filter:', commandFilter);
                 if (!commandFilter || commandFilter === resolvedCommandInfo.parts[0]) {
+                    handled = true;
                     fn(socket, resolvedCommandInfo, next);
                 } else {
                     console.log(`Skipping Middleware: ${index}`);
-                    next(); // Skip to the next middleware
+                    next(); // skip to the next middleware
                 }
             } else {
+                if (!handled) {
+                    pretty.error('No middleware handled the command \"' + resolvedCommandInfo.parts[0] + '\"');
+                }
                 console.log('End of Middleware Chain');
                 done();
             }
@@ -50,7 +56,6 @@ class TCPServer {
 
         next();
     }
-
 
     // parse received message into individual commands (separated by null byte)
     parseReceivedMessage(message) {
@@ -124,6 +129,7 @@ class TCPServer {
     // start the tcp server
     listen(port, host, callback) {
         const server = net.createServer((socket) => {
+            registerConnection(socket);
             pretty.print(`TCP connection established from ${socket.remoteAddress}:${socket.remotePort}`);
 
             // on incoming data
@@ -158,6 +164,7 @@ class TCPServer {
 
             // on socket disconnection
             socket.on('close', () => {
+                unregisterConnection(socket);
                 pretty.print(`Connection closed: ${socket.remoteAddress}:${socket.remotePort}`);
             });
 

@@ -1,20 +1,15 @@
-// imports
-const ResponseBuilder = require('./../utils/response.js');
+const response = require('./../utils/response.js');
 const pretty = require('./../utils/pretty.js');
 
-// get the plugin details
 async function getPluginsDetails(commandInfo) {
-    
     // get what kind of server it's requesting
     const [_, serverType] = commandInfo;
-
     // default values
     const serverID = "1";
     let xIPAddress = global.config_server.host || "localhost";
     let xPort = global.config_server.tcp_port.toString();
     let bIPAddress = global.config_server.host || "localhost";
     let bPort = global.config_server.tcp_port.toString();
-
     // adjust based on which server (for now they are all the same - perhaps the game hosted originally?)
     switch (serverType) {
         case "1": // User
@@ -27,9 +22,8 @@ async function getPluginsDetails(commandInfo) {
             // If needed, handle unexpected server types here
             break;
     }
-
     // Build the XML response
-    return ResponseBuilder.createResponseXml('a_gpd', {
+    return response.createResponseXml('a_gpd', {
         s: serverID,
         xi: xIPAddress,
         xp: xPort,
@@ -51,12 +45,11 @@ async function pluginsDetailsMiddleware(socket, commandInfo, next) {
     } catch (err) {
         // write an error message to the client
         pretty.error('Error processing a_gsd: ' + err.message);
-        socket.write(ResponseBuilder.createResponseXml('a_gsd', { r: 1 })); // to-do: verify this is the correct error code (but as long as it isn't 1)
+        socket.write(response.createResponseXml('a_gsd', { r: 1 })); // to-do: verify this is the correct error code (but as long as it isn't 1)
         next(err);
     }
 }
 
-// exports
 module.exports = {
     getPluginsDetails,
     pluginsDetailsMiddleware

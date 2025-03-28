@@ -22,6 +22,9 @@ const { loginGuestUserMiddleware } = require('./components/core/guest.js');
 const { hostDetailsMiddleware } = require('./components/core/host.js');
 const { pluginsDetailsMiddleware } = require('./components/core/plugins.js');
 const { loginRegisteredUserMiddleware } = require('./components/core/login.js');
+const { loadProfileVersionMiddleware  } = require('./components/galaxy/profileversion.js');
+const { versionStatistisMiddleware } = require('./components/galaxy/versionstatistics.js');
+const { changePhoneStatusMiddleware } = require('./components/user/phonestatus.js');
 
 // allocate the body parsers (BEFORE routing)
 global.body_parser = require('body-parser');
@@ -41,6 +44,9 @@ tcpServer.use(loginGuestUserMiddleware, 'a_lgu'); // login guest user
 tcpServer.use(hostDetailsMiddleware, 'a_gsd'); // get host details
 tcpServer.use(pluginsDetailsMiddleware, 'a_gpd'); // get plugin details
 tcpServer.use(loginRegisteredUserMiddleware, 'a_lru'); // login registered user
+tcpServer.use(loadProfileVersionMiddleware, 'lpv'); // load profile version
+tcpServer.use(versionStatistisMiddleware, 'vsu'); // version statistics
+tcpServer.use(changePhoneStatusMiddleware, 'u_cph'); // change phone status
 tcpServer.listen(config_server['tcp_port'], config_server['host'], () => {
     pretty.print('TCP server started on ' + config_server['host'] + ':' + config_server['tcp_port']);
 });

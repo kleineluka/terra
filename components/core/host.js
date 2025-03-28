@@ -1,8 +1,6 @@
-// imports
-const ResponseBuilder = require('./../utils/response.js');
+const response = require('./../utils/response.js');
 const pretty = require('./../utils/pretty.js');
 
-// get the host details
 async function getHostDetails(commandInfo) {
     
     // get what kind of server it's requesting
@@ -29,7 +27,7 @@ async function getHostDetails(commandInfo) {
     }
 
     // Build the XML response
-    return ResponseBuilder.createResponseXml('a_gsd', {
+    return response.createResponseXml('a_gsd', {
         s: serverID,
         xi: xIPAddress,
         xp: xPort,
@@ -38,7 +36,6 @@ async function getHostDetails(commandInfo) {
     });
 }
 
-// middleware for getting the host details
 async function hostDetailsMiddleware(socket, commandInfo, next) {
     pretty.print('Attempting to send host details to the client.');
     try {
@@ -50,12 +47,11 @@ async function hostDetailsMiddleware(socket, commandInfo, next) {
     } catch (err) {
         // write an error message to the client
         pretty.error('Error processing a_gsd: ' + err.message);
-        socket.write(ResponseBuilder.createResponseXml('a_gsd', { r: 1 })); // to-do: verify this is the correct error code (but as long as it isn't 1)
+        socket.write(response.createResponseXml('a_gsd', { r: 1 })); // to-do: verify this is the correct error code (but as long as it isn't 1)
         next(err);
     }
 }
 
-// exports
 module.exports = {
     getHostDetails,
     hostDetailsMiddleware

@@ -1,5 +1,5 @@
 # Terra 🌏
-Capitalism toy-selling video game server emulator from my childhood. **Not done yet.**
+Capitalism toy-selling video game server emulator from my childhood. **Not done yet.** Called Terra because that's what the world of UB Funkeys is called :)
 
 # Highlights 🌈
 - Stupidly simple and secure accounts with bcrypt.
@@ -14,10 +14,12 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
     - [x] TCP Server
     - [x] HTTP Server
     - [x] Packet Formatting
+    - [x] Active Connection Manager
     - [ ] Clean Up Code (ex. debug messages)
     - [ ] Figure Out More Response Codes
     - [ ] Web Panel for Admins
-    - [ ] Documentation
+    - [ ] EULA Check
+    - [ ] Send Proper Errors for Server Failures
 - [x] Core Features 
     - [x] Guest Login
     - [x] Host Details
@@ -47,7 +49,7 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
     - [ ] Turn Management
 - [ ] Galaxy Features (Cloud Storage)
     - [x] Profile Save Version
-    - [ ] Statistics Request
+    - [x] Statistics Request
     - [ ] Save Profile
     - [ ] Load Profile
     - [ ] Leaderboards
@@ -63,6 +65,9 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
     - [ ] Ready Up
     - [ ] Message Opponent
     - [ ] Play Again
+- [ ] Misc
+    - [ ] "p" command - heartbeat?
+    - [ ] Documentation
 
 # Why Node? Why not continue Java or C#? 😨
 By choosing Node over Java and C#, setup is lightweight and easy. The drawback is that it will not scale as well, but for a Flash game, this is more than fine. Node has many libraries established for web communication like what Terra needs and is a straightforward approach. I am not familiar with the codebases well enough to continue the other projects and a fresh start is more appealing to me.
