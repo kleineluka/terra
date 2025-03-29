@@ -17,14 +17,20 @@ const { initialize } = require('./components/server/database.js');
 initialize();
 
 // import middlewares
+// core plugin
 const { registerUserMiddleware } = require('./components/core/create.js');
 const { loginGuestUserMiddleware } = require('./components/core/guest.js');
 const { hostDetailsMiddleware } = require('./components/core/host.js');
 const { pluginsDetailsMiddleware } = require('./components/core/plugins.js');
 const { loginRegisteredUserMiddleware } = require('./components/core/login.js');
+const { heartbeatMiddleware } = require('./components/core/heartbeat.js');
+// galaxy plugin
 const { loadProfileVersionMiddleware  } = require('./components/galaxy/profileversion.js');
 const { versionStatistisMiddleware } = require('./components/galaxy/versionstatistics.js');
+// user plugin
 const { changePhoneStatusMiddleware } = require('./components/user/phonestatus.js');
+const { getFriendListMiddleware } = require('./components/user/friendslist.js');
+const { changeChatStatusMiddleware } = require('./components/user/chatstatus.js');
 
 // allocate the body parsers (BEFORE routing)
 global.body_parser = require('body-parser');
@@ -39,14 +45,21 @@ app.listen(config_server['port'], config_server['host'], () => {
 
 // create the tpc server
 const tcpServer = new TCPServer();
+// core plugin
 tcpServer.use(registerUserMiddleware, 'u_reg'); // register user account
 tcpServer.use(loginGuestUserMiddleware, 'a_lgu'); // login guest user
 tcpServer.use(hostDetailsMiddleware, 'a_gsd'); // get host details
 tcpServer.use(pluginsDetailsMiddleware, 'a_gpd'); // get plugin details
 tcpServer.use(loginRegisteredUserMiddleware, 'a_lru'); // login registered user
+tcpServer.use(heartbeatMiddleware, 'p'); // heartbeat ("ping")
+// galaxy plugin
 tcpServer.use(loadProfileVersionMiddleware, 'lpv'); // load profile version
 tcpServer.use(versionStatistisMiddleware, 'vsu'); // version statistics
+// user plugin
 tcpServer.use(changePhoneStatusMiddleware, 'u_cph'); // change phone status
+tcpServer.use(getFriendListMiddleware, 'u_gbl'); // get friend (buddy) list
+tcpServer.use(changeChatStatusMiddleware, 'u_ccs'); // change chat status
+// start listening for tcp connections
 tcpServer.listen(config_server['tcp_port'], config_server['host'], () => {
     pretty.print('TCP server started on ' + config_server['host'] + ':' + config_server['tcp_port']);
 });

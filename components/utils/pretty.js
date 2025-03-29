@@ -15,6 +15,7 @@ const header_styling = {
     "REDIRECT": chalk.yellowBright,
     "DATABASE": chalk.cyanBright,
     'ACTION': chalk.greenBright,
+    'WARN': chalk.yellowBright,
 };
 
 const request_styling = {

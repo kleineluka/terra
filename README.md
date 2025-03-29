@@ -1,17 +1,18 @@
 # Terra 🌏
-Capitalism toy-selling video game server emulator from my childhood. **Not done yet.** Called Terra because that's what the world of UB Funkeys is called :)
+Capitalism toy-selling video game server emulator from my childhood built in Node and Express. I've called it Terra because that's what the world of UB Funkeys is called! **Not done yet. Please also be aware that the logs WILL be flooded with information while in development, and not a clean user experience.**
 
 # Highlights 🌈
 - Stupidly simple and secure accounts with bcrypt.
 - Fast, portable and no-setup database with SQLite.
 - Readable and organised code with extensive comments (from my annoying brain).
 - Highly configurable by compartmentalising settings into JSON files.
+- Robust error handling and debugging system for further development (especially because Node won't have compile-time errors).
 
 # Progress Tracking 📌
 
 <!-- Details List -->
 <details>
-<summary>Server Emulator (6/10)</summary>
+<summary>Server Emulator (6/7)</summary>
 
 - [x] Database
 - [x] Environment (config, cache, user data)
@@ -19,15 +20,13 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
 - [x] HTTP Server
 - [x] Packet Formatting
 - [x] Active Connection Manager
-- [ ] Web Panel for Admins
-- [ ] EULA Check
-- [ ] Send Proper Errors for Server Failures
+- [ ] Better Error Handling
 
 </details>
 
 <!-- Core Features -->
 <details>
-<summary>Core Features (5/7)</summary>
+<summary>Core Features (6/7)</summary>
 
 - [x] Guest Login
 - [x] Host Details
@@ -35,16 +34,16 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
 - [x] Account Creation
 - [x] Account Login
 - [ ] Another Login
-- [ ] Heartbeat
+- [x] Heartbeat
 
 </details>
 
 <!-- User Features -->
 <details>
-<summary>User Features (1/10)</summary>
+<summary>User Features (2/10)</summary>
 
 - [ ] Friend List
-- [ ] Chat Status
+- [x] Chat Status
 - [x] Phone Status
 - [ ] Add Friend
 - [ ] Accept Friend
@@ -191,7 +190,7 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
 
 <!-- Galaxy Features -->
 <details>
-<summary>Multiplayer Features</summary>
+<summary>Multiplayer Features (0/6)</summary>
 
 - [ ] Leave Game
 - [ ] Ready Up
@@ -204,13 +203,17 @@ Capitalism toy-selling video game server emulator from my childhood. **Not done 
 
 <!-- Misc Features -->
 <details>
-<summary>Misc. Features</summary>
+<summary>Misc. Features (0/8)</summary>
 
-- [ ] Clean Up Code (ex. debug messages)
+- [ ] Clean Up Code (ex. when done, remove debugging features)
 - [ ] Figure Out More Response Codes
 - [ ] Documentation
 - [ ] Safety Filter (ex. account name)
 - [ ] Conflicting Command Handling (based on context)
+- [ ] Web Panel for Admins
+- [ ] EULA Check
+- [ ] Clean up inactive users regularly
+- [ ] Convert to Typescript? ~~Hehehe.. Maybe one day..~~
 
 </details>
 

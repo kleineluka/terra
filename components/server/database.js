@@ -26,7 +26,7 @@ function initialize() {
             chat_status INTEGER DEFAULT 0,
             connection_id VARCHAR(50) DEFAULT NULL,
             is_online INT DEFAULT NULL,
-            buddy_list VARCHAR(100) DEFAULT NULL,
+            friend_list VARCHAR(100) DEFAULT NULL,
             transaction_count INT DEFAULT NULL,
             transaction_history MEDIUMTEXT DEFAULT NULL,
             jammers_total INT DEFAULT NULL,

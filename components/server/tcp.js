@@ -35,21 +35,21 @@ class TCPServer {
             const middlewareObj = this.middleware[index++];
             if (middlewareObj) {
                 const { fn, commandFilter } = middlewareObj;
-                console.log(`Processing Middleware: ${index}`);
-                console.log('Command Info:', resolvedCommandInfo.parts);
-                console.log('Command Filter:', commandFilter);
+                //console.log(`Processing Middleware: ${index}`);
+                //console.log('Command Info:', resolvedCommandInfo.parts);
+                //console.log('Command Filter:', commandFilter);
                 if (!commandFilter || commandFilter === resolvedCommandInfo.parts[0]) {
                     handled = true;
                     fn(socket, resolvedCommandInfo, next);
                 } else {
-                    console.log(`Skipping Middleware: ${index}`);
+                    //console.log(`Skipping Middleware: ${index}`);
                     next(); // skip to the next middleware
                 }
             } else {
                 if (!handled) {
                     pretty.error('No middleware handled the command \"' + resolvedCommandInfo.parts[0] + '\"');
                 }
-                console.log('End of Middleware Chain');
+                //console.log('End of Middleware Chain');
                 done();
             }
         };

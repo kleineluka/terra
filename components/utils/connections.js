@@ -46,9 +46,28 @@ function sendToUserByConnectionId(targetConnectionId, messageString) {
     }
 }
 
+function updateHeartbeat(connectionID) {
+    const connectionData = activeConnections.get(connectionID);
+    if (connectionData) {
+        connectionData.lastHeartbeat = new Date();
+    } else {
+        pretty.print(`Attempted to update heartbeat for unknown connection ID: ${connectionID}`, 'WARN');
+    }
+}
+
+function getActiveConnectionsMap() {
+    return activeConnections;
+}
+
+function getConnectionData(connectionID) {
+    return activeConnections.get(connectionID);
+}
+
 module.exports = {
     registerConnection,
     unregisterConnection,
     sendToUserByConnectionId,
-    getActiveConnectionsMap: () => activeConnections
+    updateHeartbeat,
+    getActiveConnectionsMap,
+    getConnectionData,
 };
