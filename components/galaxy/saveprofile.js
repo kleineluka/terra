@@ -24,7 +24,7 @@ function initializeProfileSave(socket, chunkCountString) {
 
 async function saveProfileStartMiddleware(socket, commandInfo, next) {
     pretty.print(`Processing 'sp' (Save Profile Start) for Galaxy.`);
-    if (!socket.userData || !socket.userData.id) {
+    if (!socket.userWristband || !socket.userWristband.id) {
         pretty.error("User not logged in for 'sp' (Save Profile Start).");
         return next(new Error("User not authenticated for sp"));
     }

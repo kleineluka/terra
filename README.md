@@ -6,7 +6,7 @@ Capitalism toy-selling video game server emulator from my childhood built in Nod
 - Fast, portable and no-setup database with SQLite.
 - Readable and organised code with extensive comments (from my annoying brain).
 - Highly configurable by compartmentalising settings into JSON files.
-- Robust error handling and debugging system for further development (especially because Node won't have compile-time errors).
+- Robust error handling and debugging system for further development.
 
 # Progress Tracking 📌
 
@@ -40,9 +40,9 @@ Capitalism toy-selling video game server emulator from my childhood built in Nod
 
 <!-- User Features -->
 <details>
-<summary>User Features (2/10)</summary>
+<summary>User Features (3/10)</summary>
 
-- [ ] Friend List
+- [x] Friend List
 - [x] Chat Status
 - [x] Phone Status
 - [ ] Add Friend
@@ -203,16 +203,18 @@ Capitalism toy-selling video game server emulator from my childhood built in Nod
 
 <!-- Misc Features -->
 <details>
-<summary>Misc. Features (0/8)</summary>
+<summary>Misc. Features (0/10)</summary>
 
-- [ ] Clean Up Code (ex. when done, remove debugging features)
+- [ ] Clean Up Code (ex. when done remove debugging features, useless imports/exports, clean up comments, etc.)
 - [ ] Figure Out More Response Codes
 - [ ] Documentation
 - [ ] Safety Filter (ex. account name)
+- [ ] Graceful disconnection (ex. remove connection statuses on socket close)
 - [ ] Conflicting Command Handling (based on context)
 - [ ] Web Panel for Admins
-- [ ] EULA Check
+- [ ] EULA Check (by using this you wont impersonate the game)
 - [ ] Clean up inactive users regularly
+- [ ] Any random "todo" comments 
 - [ ] Convert to Typescript? ~~Hehehe.. Maybe one day..~~
 
 </details>

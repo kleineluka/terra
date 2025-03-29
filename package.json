@@ -15,6 +15,7 @@
     "chalk": "4.x",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
+    "html-entities": "^2.5.5",
     "sqlite3": "^5.1.7",
     "xml2js": "^0.6.2",
     "xmlbuilder2": "^3.1.1"
