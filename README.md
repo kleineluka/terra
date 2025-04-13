@@ -224,6 +224,20 @@ Capitalism toy-selling video game server emulator from my childhood built in Nod
 # Why Node? Why not continue Java or C#? 😨
 By choosing Node over Java and C#, setup is lightweight and easy. The drawback is that it will not scale as well, but for a Flash game, this is more than fine. Node has many libraries established for web communication like what Terra needs and is a straightforward approach. I am not familiar with the codebases well enough to continue the other projects and a fresh start is more appealing to me.
 
+
+# Deploy the server
+<p>1. Install dependency</p>
+
+```
+npm install
+```
+
+<p>2. Start the server</p>
+
+```
+npm run start
+```
+
 # Acknowledgements 🥰
 - [A1Emu](https://github.com/GittyMac/A1Emu) (and by extension [UBFunkeysServer](https://github.com/Leahnaya/UBFunkeysServer)) was a reference for the progress tracking and the server emulator. I plan for this to be a "re-implementation" of these projects initially but grow from there.
 - [XmlMessageDoc](https://github.com/bluisblu/XmlMessageDoc) has a lot of useful information about the game's packets.
