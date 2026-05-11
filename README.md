@@ -16,8 +16,8 @@ Due to how messy the game's server implementation is, I find that keeping a spec
 - [x] Online Statuses
 - [x] Cloud Save Files
 - [x] Chat Rooms
+- [x] Friend System
 - [ ] Leaderboards
-- [ ] Friend System
 - [ ] DM System
 - [ ] Trunk/Shop System
 - [ ] Boxing Game (Nightmare)

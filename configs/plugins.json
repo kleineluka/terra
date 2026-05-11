@@ -1,0 +1,9 @@
+{
+    "user":   1,
+    "chat":   2,
+    "trunk":  3,
+    "dyer":   4,
+    "soccer": 5,
+    "pool":   6,
+    "galaxy": 7
+}

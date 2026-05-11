@@ -46,6 +46,8 @@ const { kickFromCribMiddleware } = require('./components/chat/kick.js');
 const { createRoomMiddleware } = require('./components/chat/createroom.js');
 const { changePropertiesMiddleware } = require('./components/chat/properties.js');
 const { worldSyncMiddleware } = require('./components/chat/worldsync.js');
+// games
+const { filePathDyerMiddleware, readyDyerMiddleware, tileRemoveDyerMiddleware, leaveDyerMiddleware, playAgainDyerMiddleware, messageDyerMiddleware, handleDyerDisconnect } = require('./components/games/dyer.js');
 // recycled commands
 const { handleSPMiddleware } = require('./components/recycled/sp.js');
 
@@ -84,8 +86,10 @@ tcpServer.use(deleteBuddyMiddleware, 'u_dbd'); // delete buddy
 tcpServer.use(deleteBuddyResponseMiddleware, 'u_dbr'); // delete buddy acknowledgment
 // chat plugin
 tcpServer.use(createRoomMiddleware, 'cr'); // create crib room
+tcpServer.use(leaveDyerMiddleware, 'lv'); // dyer: leave match (runs before chat lv)
 tcpServer.use(leaveChatMiddleware, 'lv'); // leave chat room
 tcpServer.use(changePropertiesMiddleware, 'cp'); // change room properties (name, description, etc.)
+tcpServer.use(messageDyerMiddleware, 'ms'); // dyer: in-game chat (runs before chat ms)
 tcpServer.use(sendMessageMiddleware, 'ms'); // send chat message
 tcpServer.use(sendSpecialEventMiddleware, 'se'); // send special event (e.g. update funkey location)
 tcpServer.use(kickFromCribMiddleware, 'ko'); // kick user from crib
@@ -98,6 +102,11 @@ tcpServer.use(worldSyncMiddleware, 'pl'); // player location
 // trunk plugin
 tcpServer.use(getUserAssetsMiddleware, 'gua'); // get user assets
 
+// games - dyer (mahjong)
+tcpServer.use(filePathDyerMiddleware, 'fp'); // dyer: request game file path
+tcpServer.use(readyDyerMiddleware, 'rp'); // dyer: client ready to play
+tcpServer.use(tileRemoveDyerMiddleware, 'tr'); // dyer: remove tile pair
+tcpServer.use(playAgainDyerMiddleware, 'pa'); // dyer: play again / rematch
 // recycled commands
 tcpServer.use(handlejnMiddleware, 'jn'); // handle jn command
 tcpServer.use(handleSPMiddleware, 'sp'); // handle sp command
@@ -107,9 +116,10 @@ tcpServer.listen(config_server['tcp_port'], config_server['host'], () => {
     pretty.print('TCP server started on ' + config_server['host'] + ':' + config_server['tcp_port']);
 });
 
-// clean up chat rooms when a socket closes unexpectedly
+// clean up chat rooms and game matches when a socket closes unexpectedly
 tcpServer.onDisconnect((socket) => {
     handleLeaveChat(socket, true);
+    handleDyerDisconnect(socket);
 });
 
 // log http requests

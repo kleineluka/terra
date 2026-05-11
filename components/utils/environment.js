@@ -11,6 +11,7 @@ const setupEnvironment = () => {
     global.config_costs = loadConfig("costs.json");
     global.config_database = loadConfig("database.json");
     global.config_items = loadConfig("items.json");
+    global.config_plugins = loadConfig("plugins.json");
     global.config_server = loadConfig("server.json");
     global.config_social = loadConfig("social.json");
     pretty.print('Loaded configurations into volatile memory.', 'ACTION');

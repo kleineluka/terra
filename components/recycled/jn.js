@@ -1,5 +1,6 @@
 const pretty = require('../utils/pretty.js');
 const { joinChatMiddleware } = require('../chat/join.js');
+const { joinDyerGameMiddleware } = require('../games/dyer.js');
 
 async function handlejnMiddleware(socket, commandInfo, next) {
     pretty.print(`Handling conflicting 'jn' command.`);
@@ -18,6 +19,10 @@ async function handlejnMiddleware(socket, commandInfo, next) {
             case '2': // chat
                 pretty.print(`Routing 'jn' to Chat handler.`, 'DEBUG');
                 await joinChatMiddleware(socket, commandInfo, next);
+                break;
+            case '4': // dyer (mahjong)
+                pretty.print(`Routing 'jn' to Dyer handler.`, 'DEBUG');
+                await joinDyerGameMiddleware(socket, commandInfo, next);
                 break;
             default:
                 pretty.error(`Unhandled 'jn' command for Plugin ID: ${pluginId}. Full command: ${commandInfo.fullCommand}`);

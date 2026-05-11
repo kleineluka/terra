@@ -10,8 +10,7 @@ async function sendMessageMiddleware(socket, commandInfo, next) {
         return next(new Error("User not authenticated for ms"));
     }
     if (!socket.currentRoomId) {
-        pretty.error(`User ${socket.userWristband.username} tried to send message but is not in a room.`);
-        // log and proceed, but there is probably something that needs debugged if this happens
+        pretty.print(`User ${socket.userWristband.username} sent 'ms' but is not in a chat room, skipping...`, 'WARN');
         return next();
     }
     const currentUser = socket.userWristband;
