@@ -33,6 +33,8 @@ const { saveProfilePartMiddleware } = require('./components/galaxy/saveprofilepa
 const { changePhoneStatusMiddleware } = require('./components/user/phonestatus.js');
 const { getFriendListMiddleware } = require('./components/user/friendslist.js');
 const { changeChatStatusMiddleware } = require('./components/user/chatstatus.js');
+const { addBuddyMiddleware, addBuddyResponseMiddleware } = require('./components/user/addbuddy.js');
+const { deleteBuddyMiddleware, deleteBuddyResponseMiddleware } = require('./components/user/deletebuddy.js');
 // trunk plugin
 const { getUserAssetsMiddleware } = require('./components/trunk/userassets.js');
 // chat plugin
@@ -76,6 +78,10 @@ tcpServer.use(saveProfilePartMiddleware, 'spp'); // save profile part
 tcpServer.use(changePhoneStatusMiddleware, 'u_cph'); // change phone status
 tcpServer.use(getFriendListMiddleware, 'u_gbl'); // get friend (buddy) list
 tcpServer.use(changeChatStatusMiddleware, 'u_ccs'); // change chat status
+tcpServer.use(addBuddyMiddleware, 'u_abd'); // add buddy request
+tcpServer.use(addBuddyResponseMiddleware, 'u_abr'); // add buddy response
+tcpServer.use(deleteBuddyMiddleware, 'u_dbd'); // delete buddy
+tcpServer.use(deleteBuddyResponseMiddleware, 'u_dbr'); // delete buddy acknowledgment
 // chat plugin
 tcpServer.use(createRoomMiddleware, 'cr'); // create crib room
 tcpServer.use(leaveChatMiddleware, 'lv'); // leave chat room

@@ -42,7 +42,7 @@ You can find all server code inside `components/` and all json files for configu
 - `utils/` - Random helper functions.
 - `server.js` - Main entry point for the server.
 
-Instructions to run will be provided when the project is more mature, but in the meantime, you can just clone, install, and `npm run start` to get it running.
+Instructions to run will be provided when the project is more mature, but in the meantime, you can just clone, install, and `npm run start` to get it running. If you want to contribute, try and replicate the original game's behaviour that I may have missed (ex. sending the right error codes back), implementing features not yet added, or finding to-do comments in the code! You can also see a list of planned changes/fixes in [TODOS.md](TODOS.md).
 
 # Acknowledgements 🫶
 - [A1Emu](https://github.com/GittyMac/A1Emu) (and by extension [UBFunkeysServer](https://github.com/Leahnaya/UBFunkeysServer)) was a reference for where to start this project.
