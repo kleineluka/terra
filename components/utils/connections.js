@@ -29,7 +29,9 @@ function sendToUserByConnectionId(targetConnectionId, messageString) {
     const targetSocket = activeConnections.get(targetConnectionId);
     if (targetSocket) {
         try {
-            const messageBuffer = response.formatStreamResponse(messageString);
+            const messageBuffer = Buffer.isBuffer(messageString)
+                ? messageString
+                : response.formatStreamResponse(messageString);
             pretty.print(`Sending to ${targetConnectionId}: ${messageString}`, 'DEBUG');
             targetSocket.write(messageBuffer, (err) => {
                 if (err) {

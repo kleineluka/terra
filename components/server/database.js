@@ -13,7 +13,6 @@ const db = new sqlite3.Database(global.config_database['file_path'], (err) => {
 
 // function to initialize the database
 function initialize() {
-
     // table: users
     const createUsersTable = `
         CREATE TABLE IF NOT EXISTS users (
@@ -33,7 +32,6 @@ function initialize() {
             jammers_used INT DEFAULT NULL
         );
     `;
-
     // create the users table
     db.run(createUsersTable, (err) => {
         if (err) {
@@ -54,7 +52,6 @@ function initialize() {
             });
         }
     });
-
 }
 
 // function to run SQL queries with parameters

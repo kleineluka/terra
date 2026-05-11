@@ -31,8 +31,8 @@ async function changeChatStatusMiddleware(socket, commandInfo, next) {
     const currentUser = socket.userWristband;
     // get the chat status
     if (commandInfo.parts.length < 2) {
-        pretty.error(`Malformed 'u_ccs' command received. Parts: ${commandInfo.parts.join(', ')}`);
-        return next(new Error("Malformed u_ccs command: Missing status attribute"));
+        pretty.error(`Incorrect 'u_ccs' command received. Parts: ${commandInfo.parts.join(', ')}`);
+        return next(new Error("Incorrect u_ccs command: Missing status attribute"));
     }
     const newStatusString = commandInfo.parts[1];
     const newStatus = parseInt(newStatusString, 10);

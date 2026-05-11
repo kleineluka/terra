@@ -27,8 +27,8 @@ async function changePhoneStatusMiddleware(socket, commandInfo, next) {
     const currentUser = socket.userWristband;
     // extract the new phone status
     if (commandInfo.parts.length < 2) {
-        pretty.error(`Malformed 'u_cph' command received. Parts: ${commandInfo.parts.join(', ')}`);
-        return next(new Error("Malformed u_cph command"));
+        pretty.error(`Incorrect 'u_cph' command received. Parts: ${commandInfo.parts.join(', ')}`);
+        return next(new Error("Incorrect u_cph command"));
     }
     const newStatusString = commandInfo.parts[1];
     const newStatus = parseInt(newStatusString, 10);

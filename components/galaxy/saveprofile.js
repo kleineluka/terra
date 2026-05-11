@@ -13,7 +13,7 @@ function initializeProfileSave(socket, chunkCountString) {
         pretty.error(`Invalid chunk count for profile save: ${chunkCountString}. Initializing with 0 chunks.`, null);
         socket.saveProfileState = initialState;
         pretty.print(`Invalid chunk count ${chunkCountString}. Save will likely fail.`, 'WARN');
-        return true; // ondicate state was initialized, even if invalid count
+        return true; // indicate state was initialized, even if invalid count
     } else {
         initialState.chunksLeft = chunksLeft;
         socket.saveProfileState = initialState;
@@ -30,8 +30,8 @@ async function saveProfileStartMiddleware(socket, commandInfo, next) {
     }
     // extract chunk count
     if (commandInfo.parts.length < 2) {
-        pretty.error(`Malformed 'sp' command for Galaxy. Expected chunk count.`);
-        return next(new Error("Malformed 'sp' command: Missing chunk count"));
+        pretty.error(`Incorrect 'sp' command for Galaxy. Expected chunk count.`);
+        return next(new Error("Incorrect 'sp' command: Missing chunk count"));
     }
     const chunkCountString = commandInfo.parts[1];
     try {

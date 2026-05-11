@@ -12,6 +12,7 @@ const setupEnvironment = () => {
     global.config_database = loadConfig("database.json");
     global.config_items = loadConfig("items.json");
     global.config_server = loadConfig("server.json");
+    global.config_social = loadConfig("social.json");
     pretty.print('Loaded configurations into volatile memory.', 'ACTION');
     // ensure the profiles folder is ready to be used
     const profiles_folder = path.join(__dirname, '..', "..", config_server.profiles_folder);

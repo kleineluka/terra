@@ -26,6 +26,7 @@ const { loginRegisteredUserMiddleware } = require('./components/core/login.js');
 const { heartbeatMiddleware } = require('./components/core/heartbeat.js');
 // galaxy plugin
 const { loadProfileVersionMiddleware  } = require('./components/galaxy/profileversion.js');
+const { loadProfileMiddleware  } = require('./components/galaxy/loadprofile.js');
 const { versionStatistisMiddleware } = require('./components/galaxy/versionstatistics.js');
 const { saveProfilePartMiddleware } = require('./components/galaxy/saveprofilepart.js');
 // user plugin
@@ -34,6 +35,15 @@ const { getFriendListMiddleware } = require('./components/user/friendslist.js');
 const { changeChatStatusMiddleware } = require('./components/user/chatstatus.js');
 // trunk plugin
 const { getUserAssetsMiddleware } = require('./components/trunk/userassets.js');
+// chat plugin
+const { handlejnMiddleware } = require('./components/recycled/jn.js');
+const { leaveChatMiddleware, handleLeaveChat } = require('./components/chat/leave.js'); 
+const { sendMessageMiddleware } = require('./components/chat/message.js');
+const { sendSpecialEventMiddleware } = require('./components/chat/specialevent.js');
+const { kickFromCribMiddleware } = require('./components/chat/kick.js');
+const { createRoomMiddleware } = require('./components/chat/createroom.js');
+const { changePropertiesMiddleware } = require('./components/chat/properties.js');
+const { worldSyncMiddleware } = require('./components/chat/worldsync.js');
 // recycled commands
 const { handleSPMiddleware } = require('./components/recycled/sp.js');
 
@@ -59,20 +69,41 @@ tcpServer.use(loginRegisteredUserMiddleware, 'a_lru'); // login registered user
 tcpServer.use(heartbeatMiddleware, 'p'); // heartbeat ("ping")
 // galaxy plugin
 tcpServer.use(loadProfileVersionMiddleware, 'lpv'); // load profile version
+tcpServer.use(loadProfileMiddleware, 'lp'); // load profile
 tcpServer.use(versionStatistisMiddleware, 'vsu'); // version statistics
 tcpServer.use(saveProfilePartMiddleware, 'spp'); // save profile part
 // user plugin
 tcpServer.use(changePhoneStatusMiddleware, 'u_cph'); // change phone status
 tcpServer.use(getFriendListMiddleware, 'u_gbl'); // get friend (buddy) list
 tcpServer.use(changeChatStatusMiddleware, 'u_ccs'); // change chat status
+// chat plugin
+tcpServer.use(createRoomMiddleware, 'cr'); // create crib room
+tcpServer.use(leaveChatMiddleware, 'lv'); // leave chat room
+tcpServer.use(changePropertiesMiddleware, 'cp'); // change room properties (name, description, etc.)
+tcpServer.use(sendMessageMiddleware, 'ms'); // send chat message
+tcpServer.use(sendSpecialEventMiddleware, 'se'); // send special event (e.g. update funkey location)
+tcpServer.use(kickFromCribMiddleware, 'ko'); // kick user from crib
+tcpServer.use(worldSyncMiddleware, 'mv'); // player move
+tcpServer.use(worldSyncMiddleware, 'od'); // open door
+tcpServer.use(worldSyncMiddleware, 'pi'); // put item
+tcpServer.use(worldSyncMiddleware, 'ri'); // remove item
+tcpServer.use(worldSyncMiddleware, 'ia'); // item activate
+tcpServer.use(worldSyncMiddleware, 'pl'); // player location
 // trunk plugin
 tcpServer.use(getUserAssetsMiddleware, 'gua'); // get user assets
+
 // recycled commands
+tcpServer.use(handlejnMiddleware, 'jn'); // handle jn command
 tcpServer.use(handleSPMiddleware, 'sp'); // handle sp command
 
 // start listening for tcp connections
 tcpServer.listen(config_server['tcp_port'], config_server['host'], () => {
     pretty.print('TCP server started on ' + config_server['host'] + ':' + config_server['tcp_port']);
+});
+
+// clean up chat rooms when a socket closes unexpectedly
+tcpServer.onDisconnect((socket) => {
+    handleLeaveChat(socket, true);
 });
 
 // log http requests

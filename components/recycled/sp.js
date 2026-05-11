@@ -1,5 +1,4 @@
 const pretty = require('../utils/pretty.js');
-const response = require('../utils/response.js'); 
 const { saveProfileStartMiddleware: handleGalaxySaveProfileStart } = require('../galaxy/saveprofile.js');
 // const { handleSoccerSP } = require('../games/soccer/sp.js');
 // const { handlePoolSP } = require('./pool/sp.js');
@@ -11,8 +10,8 @@ async function handleSPMiddleware(socket, commandInfo, next) {
         return next(new Error("User not authenticated for sp"));
     }
     if (!commandInfo.routing || commandInfo.routing.length < 2) {
-        pretty.error(`Malformed 'sp' command: Missing or incomplete routing string. Routing: ${commandInfo.routing?.join('|')}`);
-        return next(new Error("Malformed 'sp' command: Missing routing info"));
+        pretty.error(`Incorrect 'sp' command: Missing or incomplete routing string. Routing: ${commandInfo.routing?.join('|')}`);
+        return next(new Error("Incorrect 'sp' command: Missing routing info"));
     }
     const pluginId = commandInfo.routing[1];
     pretty.print(`'sp' command routed for Plugin ID: ${pluginId}`, 'DEBUG');
@@ -37,7 +36,7 @@ async function handleSPMiddleware(socket, commandInfo, next) {
         }
     } catch (err) {
         pretty.error(`Error executing specific 'sp' handler for Plugin ID ${pluginId}: ${err.message}`, err);
-        next(err); // Pass the error to the main error handler
+        next(err);
     }
     // call next in each individual handler, not here (!)
 }

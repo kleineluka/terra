@@ -10,7 +10,6 @@ async function loginGuestUser() {
         p: '',       // Password
         s: '1'       // Service ID
     });
-
     pretty.print('Guest user logged in.');
     return responseXml;
 }

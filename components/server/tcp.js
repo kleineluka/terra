@@ -8,11 +8,17 @@ class TCPServer {
 
     constructor() {
         this.middleware = [];
+        this.disconnectHandlers = [];
     }
 
     // add middleware to the chain
     use(fn, commandFilter = null) {
         this.middleware.push({ fn, commandFilter });
+    }
+
+    // register a handler called when a socket closes (for cleanup)
+    onDisconnect(fn) {
+        this.disconnectHandlers.push(fn);
     }
 
     // run middleware chain
@@ -62,10 +68,14 @@ class TCPServer {
         return message.toString().split('\0').filter(cmd => cmd.trim() !== '');
     }
 
-    // parse a command into its parts
+    // parse a command into its parts, top-level attrs, and child element attrs
     async parseCommand(command) {
-        const commandInfo = [];
+        const parts = [];
         let routingString = '';
+        let attrs = {};
+        const childAttrs = {};
+
+        console.log(command);
 
         // check for routing string (ends with '#')
         if (command.endsWith('#')) {
@@ -76,39 +86,51 @@ class TCPServer {
             command = command.substring(0, command.lastIndexOf('>') + 1);
         }
 
-        // wrap it in a root element then prase
+        // wrap it in a root element then parse
         const wrappedCommand = `<A1Command>${command}</A1Command>`;
         const parsedXML = await parseStringPromise(wrappedCommand);
 
         // extract command root name
-        const root = parsedXML.A1Command[Object.keys(parsedXML.A1Command)[0]];
-        commandInfo.push(Object.keys(parsedXML.A1Command)[0]);
+        const rootKey = Object.keys(parsedXML.A1Command)[0];
+        parts.push(rootKey);
 
-        // extract attributes and descendants
-        const extractAttributes = (element) => {
-            if (element.$) {
-                for (const value of Object.values(element.$)) {
-                    commandInfo.push(value);
+        const root = parsedXML.A1Command[rootKey];
+
+        if (root && root.length) {
+            const firstChild = root[0];
+
+            // extract root element's own attributes (e.g. t, id on <jn>)
+            if (firstChild.$) {
+                attrs = firstChild.$;
+                for (const value of Object.values(firstChild.$)) {
+                    parts.push(value);
                 }
             }
-        };
 
-        extractAttributes(root);
-        if (root && root.length) {
-            for (const child of root) {
-                extractAttributes(child);
+            // extract child element attributes (e.g. <pr> inside <jn>)
+            for (const [key, value] of Object.entries(firstChild)) {
+                if (key === '$' || !Array.isArray(value)) continue;
+                childAttrs[key] = [];
+                for (const grandchild of value) {
+                    if (grandchild.$) {
+                        childAttrs[key].push(grandchild.$);
+                        for (const v of Object.values(grandchild.$)) {
+                            parts.push(v);
+                        }
+                    }
+                }
             }
         }
 
         // append routing string if present
         if (routingString) {
-            commandInfo.push(...routingString.split('|'));
+            parts.push(...routingString.split('|'));
         }
 
         // debug print out
-        pretty.print(`New TCP Command: ${commandInfo.join(' | ')}`, 'DEBUG');
+        pretty.print(`New TCP Command: ${parts.join(' | ')}`, 'DEBUG');
 
-        return commandInfo;
+        return { parts, attrs, childAttrs };
     }
 
     // parse routing information from a command
@@ -140,12 +162,14 @@ class TCPServer {
                 for (const command of commands) {
                     try {
                         // step two: parse command info and routing 
-                        const parts = await this.parseCommand(command); 
+                        const parsed = await this.parseCommand(command);
                         const routing = this.parseRoutingStrings(command); 
 
                         const commandInfo = {
                             fullCommand: command,
-                            parts,
+                            parts: parsed.parts,
+                            attrs: parsed.attrs,
+                            childAttrs: parsed.childAttrs,
                             routing
                         };
 
@@ -165,6 +189,7 @@ class TCPServer {
             // on socket disconnection
             socket.on('close', () => {
                 unregisterConnection(socket);
+                this.disconnectHandlers.forEach(fn => fn(socket));
                 pretty.print(`Connection closed: ${socket.remoteAddress}:${socket.remotePort}`);
             });
 

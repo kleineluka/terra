@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"git.ignoreLimitWarning": true
+		"git.ignoreLimitWarning": true,
+		"vscord.enabled": false
 	}
 }
